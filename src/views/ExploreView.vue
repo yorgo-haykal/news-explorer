@@ -60,6 +60,16 @@
 </template>
 
 <script>
+const VALID_CATEGORIES = [
+  "business",
+  "entertainment",
+  "general",
+  "health",
+  "science",
+  "sports",
+  "technology",
+];
+
 export default {
   name: "ExploreView",
   data() {
@@ -72,6 +82,13 @@ export default {
   computed: {
     q() {
       return (this.$route.query.q || "").trim();
+    },
+    category() {
+      const c = (this.$route.query.category || "general").toLowerCase();
+      return VALID_CATEGORIES.includes(c) ? c : "general";
+    },
+    prettyCategory() {
+      return this.category.charAt(0).toUpperCase() + this.category.slice(1);
     },
     filteredArticles() {
       return this.articles.filter(
@@ -90,16 +107,19 @@ export default {
     "$route.query.q"() {
       this.run();
     },
+    "$route.query.category"() {
+      this.run();
+    },
   },
   methods: {
     async run() {
       if (this.q) {
         await this.fetchSearch(this.q);
       } else {
-        await this.fetchTopHeadlines();
+        await this.fetchTopHeadlines(this.category);
       }
     },
-    async fetchTopHeadlines() {
+    async fetchTopHeadlines(category) {
       this.loading = true;
       this.error = null;
 
@@ -111,7 +131,13 @@ export default {
         return;
       }
 
-      const url = `https://newsapi.org/v2/top-headlines?country=us&pageSize=20&apiKey=${apiKey}`;
+      const url =
+        "https://newsapi.org/v2/top-headlines?" +
+        new URLSearchParams({
+          category,
+          pageSize: "20",
+          apiKey,
+        }).toString();
 
       try {
         const response = await fetch(url);

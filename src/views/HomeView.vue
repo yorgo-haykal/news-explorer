@@ -14,21 +14,29 @@
     <div class="themes-section">
       <h2 class="section-title">Suggested Topics</h2>
       <div class="theme-buttons">
-        <button class="theme-btn">
+        <button @click="openCategory('politics')" class="theme-btn">
           <span class="btn-icon">🗳️</span>
           Politics
         </button>
-        <button class="theme-btn">
+        <button @click="openCategory('sports')" class="theme-btn">
           <span class="btn-icon">⚽</span>
           Sports
         </button>
-        <button class="theme-btn">
+        <button @click="openCategory('technology')" class="theme-btn">
           <span class="btn-icon">💻</span>
           Technology
         </button>
-        <button class="theme-btn">
+        <button @click="openCategory('business')" class="theme-btn">
           <span class="btn-icon">📈</span>
           Economy
+        </button>
+        <button @click="openCategory('entertainment')" class="theme-btn">
+          <span class="btn-icon">🍿</span>
+          Entertainment
+        </button>
+        <button @click="openCategory('science')" class="theme-btn">
+          <span class="btn-icon">🧪</span>
+          Science
         </button>
       </div>
     </div>
@@ -61,6 +69,11 @@ export default {
   name: "HomeView",
   components: {
     SearchBar,
+  },
+  methods: {
+    openCategory(cat) {
+      this.$router.push({ name: "explore", query: { category: cat } });
+    },
   },
 };
 </script>
