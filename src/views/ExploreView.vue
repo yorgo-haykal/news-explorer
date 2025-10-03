@@ -70,6 +70,9 @@ export default {
     };
   },
   computed: {
+    q() {
+      return (this.$route.query.q || "").trim();
+    },
     filteredArticles() {
       return this.articles.filter(
         (article) =>
@@ -81,10 +84,22 @@ export default {
     },
   },
   mounted() {
-    this.fetchArticles();
+    this.run();
+  },
+  watch: {
+    "$route.query.q"() {
+      this.run();
+    },
   },
   methods: {
-    async fetchArticles() {
+    async run() {
+      if (this.q) {
+        await this.fetchSearch(this.q);
+      } else {
+        await this.fetchTopHeadlines();
+      }
+    },
+    async fetchTopHeadlines() {
       this.loading = true;
       this.error = null;
 
@@ -116,6 +131,40 @@ export default {
         console.error("Error fetching articles:", error);
         this.error =
           error.message || "Failed to load news articles. Please try again.";
+      } finally {
+        this.loading = false;
+      }
+    },
+    async fetchSearch(q) {
+      this.loading = true;
+      this.error = null;
+
+      const apiKey = process.env.VUE_APP_NEWS_API_KEY;
+      if (!apiKey) {
+        this.error = "Please configure your News API key in the .env file";
+        this.loading = false;
+        return;
+      }
+
+      const url =
+        `https://newsapi.org/v2/everything?` +
+        new URLSearchParams({
+          q,
+          language: "en",
+          searchIn: "title",
+          sortBy: "publishedAt",
+          pageSize: "20",
+          apiKey,
+        }).toString();
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.status === "ok") this.articles = data.articles ?? [];
+        else throw new Error(data.message || "Failed to fetch news articles");
+      } catch (err) {
+        this.error = err.message || "Failed to load news articles.";
       } finally {
         this.loading = false;
       }

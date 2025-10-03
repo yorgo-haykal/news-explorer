@@ -1,13 +1,19 @@
 <template>
-  <div class="search-box">
-    <input type="text" placeholder="Search news" />
-    <button>search</button>
-  </div>
+  <form class="search-box" @submit.prevent="onSubmit">
+    <input v-model.trim="q" type="text" placeholder="Search news" required />
+    <button type="submit">search</button>
+  </form>
 </template>
 
 <script>
 export default {
   name: "SearchBar",
+  data: () => ({ q: "" }),
+  methods: {
+    onSubmit() {
+      this.$router.push({ name: "explore", query: { q: this.q } });
+    },
+  },
 };
 </script>
 
