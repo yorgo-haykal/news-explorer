@@ -1,12 +1,19 @@
 <template>
   <div class="home">
-    <h1>Explore global news in one click</h1>
-    <search-bar />
-    <h2>Theme suggestions</h2>
-    <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
-    </nav>
+    <h1>Explorez l’actualité mondiale en un clic</h1>
+    <SearchBar />
+
+    <div class="themes">
+      <h2>Suggestions de thèmes</h2>
+      <div class="theme-buttons">
+        <button>Politique</button>
+        <button>Sport</button>
+        <button>Technologie</button>
+        <button>Économie</button>
+      </div>
+    </div>
+
+    <router-link to="/explore" class="explore-button">Explorer →</router-link>
   </div>
 </template>
 
@@ -21,30 +28,62 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .home {
-  min-height: 75vh;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  background-color: #f9f9f9;
+  text-align: center;
 }
 
-.home h1 {
-  font-size: 3rem;
-  margin-bottom: 100px;
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 2rem;
 }
 
-.home nav {
-  padding: 30px;
+.themes h2 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+}
+
+.theme-buttons {
   display: flex;
-  justify-content: space-evenly;
-  width: 25vh;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
-.home nav a {
+.theme-buttons button {
   background-color: white;
-  border: 2px solid blue;
-  border-radius: 15px;
-  padding: 5px;
+  border: 2px solid #007bff;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.theme-buttons button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.explore-button {
+  margin-top: 3rem;
+  background-color: #007bff;
+  color: white;
+  border-radius: 25px;
+  padding: 10px 30px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.explore-button:hover {
+  background-color: #0056b3;
 }
 </style>
