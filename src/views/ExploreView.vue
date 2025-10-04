@@ -68,6 +68,16 @@
 </template>
 
 <script>
+const VALID_CATEGORIES = [
+  "business",
+  "entertainment",
+  "general",
+  "health",
+  "science",
+  "sports",
+  "technology",
+];
+
 export default {
   name: "ExploreView",
   data() {
@@ -78,6 +88,16 @@ export default {
     };
   },
   computed: {
+    q() {
+      return (this.$route.query.q || "").trim();
+    },
+    category() {
+      const c = (this.$route.query.category || "general").toLowerCase();
+      return VALID_CATEGORIES.includes(c) ? c : "general";
+    },
+    prettyCategory() {
+      return this.category.charAt(0).toUpperCase() + this.category.slice(1);
+    },
     filteredArticles() {
       return this.articles.filter(
         (article) =>
@@ -89,10 +109,25 @@ export default {
     },
   },
   mounted() {
-    this.fetchArticles();
+    this.run();
+  },
+  watch: {
+    "$route.query.q"() {
+      this.run();
+    },
+    "$route.query.category"() {
+      this.run();
+    },
   },
   methods: {
-    async fetchArticles() {
+    async run() {
+      if (this.q) {
+        await this.fetchSearch(this.q);
+      } else {
+        await this.fetchTopHeadlines(this.category);
+      }
+    },
+    async fetchTopHeadlines(category) {
       this.loading = true;
       this.error = null;
 
@@ -104,7 +139,13 @@ export default {
         return;
       }
 
-      const url = `https://newsapi.org/v2/top-headlines?country=us&pageSize=20&apiKey=${apiKey}`;
+      const url =
+        "https://newsapi.org/v2/top-headlines?" +
+        new URLSearchParams({
+          category,
+          pageSize: "20",
+          apiKey,
+        }).toString();
 
       try {
         const response = await fetch(url);
@@ -124,6 +165,40 @@ export default {
         console.error("Error fetching articles:", error);
         this.error =
           error.message || "Failed to load news articles. Please try again.";
+      } finally {
+        this.loading = false;
+      }
+    },
+    async fetchSearch(q) {
+      this.loading = true;
+      this.error = null;
+
+      const apiKey = process.env.VUE_APP_NEWS_API_KEY;
+      if (!apiKey) {
+        this.error = "Please configure your News API key in the .env file";
+        this.loading = false;
+        return;
+      }
+
+      const url =
+        `https://newsapi.org/v2/everything?` +
+        new URLSearchParams({
+          q,
+          language: "en",
+          searchIn: "title",
+          sortBy: "publishedAt",
+          pageSize: "20",
+          apiKey,
+        }).toString();
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.status === "ok") this.articles = data.articles ?? [];
+        else throw new Error(data.message || "Failed to fetch news articles");
+      } catch (err) {
+        this.error = err.message || "Failed to load news articles.";
       } finally {
         this.loading = false;
       }
