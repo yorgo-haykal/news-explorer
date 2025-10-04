@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ExploreView from "../views/ExploreView.vue"; // ✅ Ajout ici
+import ExploreView from "../views/ExploreView.vue";
 
 const routes = [
   {
@@ -15,9 +15,15 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
   {
-    path: "/explore", // ✅ Nouvelle route
+    path: "/explore",
     name: "explore",
     component: ExploreView,
+  },
+  {
+    path: "/readmore",
+    name: "readmore",
+    component: () => import("../views/ReadMore.vue"),
+    props: true,
   },
 ];
 
