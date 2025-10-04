@@ -37,14 +37,22 @@
           <p class="article-description">
             {{ truncateDescription(article.description) }}
           </p>
-          <a
-            :href="article.url"
-            target="_blank"
-            rel="noopener noreferrer"
+          <router-link
+            :to="{
+              name: 'readmore',
+              query: {
+                title: article.title,
+                description: article.description,
+                author: article.author,
+                publishedAt: article.publishedAt,
+                urlToImage: article.urlToImage,
+                content: article.content,
+              },
+            }"
             class="read-more"
           >
-            Read Full Article
-          </a>
+            Read more
+          </router-link>
         </div>
       </div>
     </div>
