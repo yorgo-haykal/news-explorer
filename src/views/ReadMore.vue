@@ -1,40 +1,42 @@
 <template>
   <div class="readmore">
     <div class="article-card">
-      <!-- Titre -->
-      <h1 class="article-title">{{ article.title }}</h1>
+      <div class="article-inner">
+        <!-- Titre -->
+        <h1 class="article-title">{{ article.title }}</h1>
 
-      <!-- Description -->
-      <p class="article-description">{{ article.description }}</p>
+        <!-- Description -->
+        <p class="article-description">{{ article.description }}</p>
 
-      <!-- Auteur + Date -->
-      <div class="article-meta">
-        <span v-if="article.author">Par {{ article.author }}</span>
-        <span v-if="article.publishedAt">
-          • {{ formatDate(article.publishedAt) }}</span
+        <!-- Auteur + Date -->
+        <div class="article-meta">
+          <span v-if="article.author">Par {{ article.author }}</span>
+          <span v-if="article.publishedAt">
+            • {{ formatDate(article.publishedAt) }}</span
+          >
+        </div>
+
+        <!-- Image -->
+        <div class="article-image" v-if="article.urlToImage">
+          <img
+            :src="article.urlToImage"
+            :alt="article.title"
+            @error="handleImageError"
+          />
+        </div>
+
+        <!-- Contenu complet -->
+        <div class="article-content">
+          <p v-if="article.content">{{ article.content }}</p>
+          <p v-else-if="article.description">{{ article.description }}</p>
+          <p v-else>Aucun contenu complet disponible pour cet article.</p>
+        </div>
+
+        <!-- Bouton retour -->
+        <router-link to="/explore" class="back-button"
+          >← Retour aux articles</router-link
         >
       </div>
-
-      <!-- Image -->
-      <div class="article-image" v-if="article.urlToImage">
-        <img
-          :src="article.urlToImage"
-          :alt="article.title"
-          @error="handleImageError"
-        />
-      </div>
-
-      <!-- Contenu complet -->
-      <div class="article-content">
-        <p v-if="article.content">{{ article.content }}</p>
-        <p v-else-if="article.description">{{ article.description }}</p>
-        <p v-else>Aucun contenu complet disponible pour cet article.</p>
-      </div>
-
-      <!-- Bouton retour -->
-      <router-link to="/explore" class="back-button"
-        >← Retour aux articles</router-link
-      >
     </div>
   </div>
 </template>
@@ -84,13 +86,16 @@ export default {
 
 .article-card {
   background: white;
-  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
   padding: 2rem;
 }
-
+.article-inner {
+  max-width: 800px; /* contenu plus étroit */
+  width: 100%;
+  margin: 0 auto;
+}
 .article-title {
   font-size: 2rem;
   font-weight: 700;

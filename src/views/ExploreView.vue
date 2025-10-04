@@ -1,6 +1,10 @@
 <template>
   <div class="explore">
-    <h1>Latest News</h1>
+    <div class="page-header">
+      <h1>{{ prettyCategory }} News</h1>
+      <div class="header-underline"></div>
+      <h2>Latest News</h2>
+    </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="loading">
@@ -228,13 +232,33 @@ export default {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 6%;
+  background-color: white;
 }
 
-h1 {
-  text-align: center;
+.page-header {
+  text-align: left;
   margin-bottom: 2rem;
-  color: #333;
+}
+
+.page-header h1 {
   font-size: 2.5rem;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.header-underline {
+  width: 80%;
+  height: 4px;
+  background-color: black;
+  margin-bottom: 1rem;
+  border-radius: 2px;
+}
+
+.page-header h2 {
+  font-size: 1.5rem;
+  color: #555;
+  margin: 0 0 1.5rem 0;
 }
 
 .loading {
