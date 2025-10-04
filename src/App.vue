@@ -1,6 +1,8 @@
 <template>
   <header>
-    <h1>News Explorer</h1>
+    <router-link to="/" class="logo-link">
+      <h1>News Explorer</h1>
+    </router-link>
     <div class="header-buttons">
       <button id="explore-buttonhome" @click="goHome">Home</button>
       <button id="explore-button" @click="goExplore">Explore</button>
@@ -15,16 +17,6 @@
       <!-- Home -->
       <router-link to="/" :class="{ active: $route.path === '/' }">
         Home
-      </router-link>
-
-      <!-- Explore -->
-      <router-link
-        to="/explore"
-        :class="{
-          active: $route.path === '/explore' && !$route.query.category,
-        }"
-      >
-        Explore
       </router-link>
 
       <!-- Categories -->
@@ -92,6 +84,15 @@ header {
   align-items: center;
   background-color: white;
   padding: 10px;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+.logo-link h1 {
+  margin: 0;
+  color: black;
 }
 
 #explore-button {

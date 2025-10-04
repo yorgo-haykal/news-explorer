@@ -42,7 +42,7 @@
     </div>
 
     <router-link to="/explore" class="explore-button">
-      <span>General new</span>
+      <span>Latest headlines</span>
       <svg
         class="arrow-icon"
         width="20"

@@ -10,7 +10,7 @@
 
         <!-- Auteur + Date -->
         <div class="article-meta">
-          <span v-if="article.author">Par {{ article.author }}</span>
+          <span v-if="article.author">By {{ article.author }}</span>
           <span v-if="article.publishedAt">
             • {{ formatDate(article.publishedAt) }}</span
           >
@@ -29,13 +29,11 @@
         <div class="article-content">
           <p v-if="article.content">{{ article.content }}</p>
           <p v-else-if="article.description">{{ article.description }}</p>
-          <p v-else>Aucun contenu complet disponible pour cet article.</p>
+          <p v-else>No content available for this article.</p>
         </div>
 
         <!-- Bouton retour -->
-        <router-link to="/explore" class="back-button"
-          >← Retour aux articles</router-link
-        >
+        <router-link to="/explore" class="back-button">← Back</router-link>
       </div>
     </div>
   </div>
