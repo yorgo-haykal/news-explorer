@@ -14,10 +14,6 @@
     <div class="themes-section">
       <h2 class="section-title">Suggested Topics</h2>
       <div class="theme-buttons">
-        <button @click="openCategory('general')" class="theme-btn">
-          <span class="btn-icon">📰</span>
-          General
-        </button>
         <button @click="openCategory('business')" class="theme-btn">
           <span class="btn-icon">📈</span>
           Business
@@ -46,7 +42,7 @@
     </div>
 
     <router-link to="/explore" class="explore-button">
-      <span>Explore More</span>
+      <span>General new</span>
       <svg
         class="arrow-icon"
         width="20"
@@ -165,7 +161,7 @@ export default {
 
 .theme-buttons {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 2%;
   max-width: 1250px;
   margin: 0 auto;
