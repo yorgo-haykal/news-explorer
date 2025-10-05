@@ -49,6 +49,7 @@
                 description: article.description,
                 author: article.author,
                 publishedAt: article.publishedAt,
+                url: article.url,
                 urlToImage: article.urlToImage,
                 content: article.content,
               },
