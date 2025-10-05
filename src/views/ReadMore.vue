@@ -30,10 +30,19 @@
           <p v-if="article.content">{{ article.content }}</p>
           <p v-else-if="article.description">{{ article.description }}</p>
           <p v-else>No content available for this article.</p>
+
+          <a
+            v-if="article.url"
+            :href="article.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read full article
+          </a>
         </div>
 
         <!-- Bouton retour -->
-        <router-link to="/explore" class="back-button">← Back</router-link>
+        <a @click="$router.go(-1)" class="back-button">← Back</a>
       </div>
     </div>
   </div>
@@ -54,6 +63,7 @@ export default {
       description: this.$route.query.description,
       author: this.$route.query.author,
       publishedAt: this.$route.query.publishedAt,
+      url: this.$route.query.url,
       urlToImage: this.$route.query.urlToImage,
       content: this.$route.query.content,
     };
