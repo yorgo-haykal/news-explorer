@@ -1,9 +1,25 @@
-const BASE = "https://newsapi.org/v2";
-const KEY = process.env.VUE_APP_NEWS_API_KEY; // or call your proxy: base "/api"
+// src/api/newsApi.js
+const isProd = process.env.NODE_ENV === "production";
+
+// In production we call your Vercel functions (e.g. /api/top-headlines, /api/everything).
+// In development we can call NewsAPI directly.
+const BASE = isProd ? "/api" : "https://newsapi.org/v2";
+const KEY = process.env.VUE_APP_NEWS_API_KEY; // only used in dev
+
+function buildUrl(path, params) {
+  const search = new URLSearchParams(params);
+
+  // Only send the apiKey from the browser in development (localhost)
+  if (!isProd) {
+    if (!KEY) throw new Error("Missing VUE_APP_NEWS_API_KEY in development");
+    search.set("apiKey", KEY);
+  }
+
+  return `${BASE}${path}?${search.toString()}`;
+}
 
 async function call(path, params) {
-  const url =
-    BASE + path + "?" + new URLSearchParams({ ...params, apiKey: KEY });
+  const url = buildUrl(path, params);
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
@@ -17,7 +33,6 @@ export function fetchTopHeadlines({
   pageSize = 20,
   page = 1,
 } = {}) {
-  console.log(KEY);
   return call("/top-headlines", { country, category, pageSize, page });
 }
 
