@@ -2,7 +2,7 @@
   <div class="article-card">
     <div class="article-image">
       <img
-        :src="article.urlToImage || '/placeholder-image.jpg'"
+        :src="article.urlToImage || placeholderImage"
         :alt="article.title"
         class="article-img"
         @error="handleImageError"
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import placeholderImage from "@/assets/placeholder-image.jpg";
+
 export default {
   props: ["article"],
   methods: {
@@ -55,7 +57,7 @@ export default {
         : description;
     },
     handleImageError(event) {
-      event.target.src = "/placeholder-image.jpg";
+      event.target.src = placeholderImage;
     },
   },
 };
